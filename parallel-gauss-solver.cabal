@@ -1,0 +1,47 @@
+cabal-version:      3.0
+name:               parallel-gauss-solver
+version:            0.1.0.0
+synopsis:           Parallel Gaussian elimination solver for systems of linear equations
+description:        Laboratory work 2: multithreaded SLAE solver in Haskell using GHC -threaded.
+build-type:         Simple
+
+common warnings
+    ghc-options: -Wall -Wcompat -Wincomplete-uni-patterns -Wincomplete-record-updates -O2
+
+library
+    import:           warnings
+    hs-source-dirs:   src
+    exposed-modules:
+        CLI
+        SLAE.Generator
+        SLAE.Gauss
+        SLAE.Parallel
+        SLAE.Parser
+        SLAE.Types
+    build-depends:
+        base >=4.17 && <5,
+        array
+    default-language: GHC2021
+
+executable parallel-gauss-solver
+    import:           warnings
+    hs-source-dirs:   app
+    main-is:          Main.hs
+    ghc-options:      -threaded -rtsopts -with-rtsopts=-N
+    build-depends:
+        base,
+        deepseq,
+        parallel-gauss-solver
+    default-language: GHC2021
+
+test-suite spec
+    import:           warnings
+    type:             exitcode-stdio-1.0
+    hs-source-dirs:   test
+    main-is:          Spec.hs
+    ghc-options:      -threaded -rtsopts -with-rtsopts=-N
+    build-depends:
+        base,
+        array,
+        parallel-gauss-solver
+    default-language: GHC2021
